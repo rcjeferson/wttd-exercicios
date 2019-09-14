@@ -8,6 +8,7 @@
 
 # Additional basic string exercises
 
+import re
 
 # D. verbing
 # Given a string, if its length is at least 3,
@@ -17,9 +18,15 @@
 # If the string length is less than 3, leave it unchanged.
 # Return the resulting string.
 def verbing(s):
-    # +++your code here+++
-    return
-
+    if len(s) > 3:
+        if s[-3:] == 'ing':
+            ret = s + 'ly'
+        else:
+            ret = s + 'ing'
+    else:
+        ret = s
+        
+    return ret
 
 # E. not_bad
 # Given a string, find the first appearance of the
@@ -30,8 +37,8 @@ def verbing(s):
 # So 'This dinner is not that bad!' yields:
 # This dinner is good!
 def not_bad(s):
-    # +++your code here+++
-    return
+    ret = re.sub('not.*bad', 'good', s)
+    return ret
 
 
 # F. front_back
@@ -42,9 +49,24 @@ def not_bad(s):
 # Given 2 strings, a and b, return a string of the form
 #  a-front + b-front + a-back + b-back
 def front_back(a, b):
-    # +++your code here+++
-    return
+    a = half_string(a)
+    b = half_string(b)
+    
+    ret = a[0] + b[0] + a[1] + b[1]        
+    return ret
 
+def half_string(s):
+    if len(s) % 2 == 0:
+        half = int(len(s) / 2)
+        sfront = s[:half]
+        sback = s[half:]
+    else:
+        half = int(len(s) / 2)
+        sfront = s[:half+1]
+        sback = s[half+1:]
+
+    ret = (sfront, sback)
+    return ret
 
 # Simple provided test() function used in main() to print
 # what each function returns vs. what it's supposed to return.
