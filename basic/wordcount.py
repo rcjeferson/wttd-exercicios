@@ -39,8 +39,43 @@ print_words() and print_top().
 
 import sys
 
+def load_words(filename):
+    words = {}
+    f = open(filename, 'r')
 
-# +++your code here+++
+    if f.mode == 'r':
+        content = f.read().split()
+        f.close()
+
+        for word in content:
+            word = word.lower()
+            if word not in words.keys():
+                words[word] = 1
+            else:
+                words[word] += 1
+
+        words = sorted(words.items(), key=lambda word: word[1], reverse=True)
+
+        return words
+    else:
+        print('Failed to open file!')
+        sys.exit(1)
+
+def print_words(filename):
+    words = load_words(filename)
+    for word, count in words:
+        print("%s %i" % (word, count))
+    
+    return
+
+def print_top(filename):
+    words = load_words(filename)
+    words = words[:20]
+    
+    for word, count in words:
+        print("%s %i" % (word, count))
+    return
+
 # Define print_words(filename) and print_top(filename) functions.
 # You could write a helper utility function that reads a file
 # and builds and returns a word/count dict for it.
