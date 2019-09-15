@@ -64,6 +64,11 @@ def extract_names(filename):
 
     return rank
 
+def print_summary(rank):
+    text = '\n'.join(rank[:10]) + '\n...'
+    print(text)
+
+    return
 
 def main():
     # This command-line parsing code is provided.
@@ -84,11 +89,11 @@ def main():
         # For each filename, get the names, then either print the text output
         # or write it to a summary file
     
-    rank = []
     for file in args:
-        rank.append(extract_names(file))
-    
-    print(rank)
+        rank = extract_names(file)
+
+        if summary:
+            print_summary(rank)
 
 
 if __name__ == '__main__':
