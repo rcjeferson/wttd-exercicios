@@ -9,7 +9,9 @@
 import os
 import re
 import sys
-import urllib
+import urllib.request
+import fileinput
+import shutil
 
 """Logpuzzle exercise
 Given an apache logfile, find the puzzle urls and download the images.
@@ -24,7 +26,15 @@ def read_urls(filename):
     extracting the hostname from the filename itself.
     Screens out duplicate urls and returns the urls sorted into
     increasing order."""
-    # +++your code here+++
+
+    urls = []
+    for line in fileinput.input(files=filename):
+        search = re.search('.*GET (.*puzzle.*) HTTP/1.0', line, re.I)
+
+        if search:
+            urls.append(search.group(1))
+
+    return urls
 
 
 def download_images(img_urls, dest_dir):
@@ -35,8 +45,23 @@ def download_images(img_urls, dest_dir):
     with an img tag to show each local image file.
     Creates the directory if necessary.
     """
-    # +++your code here+++
+    
+    url_base = 'https://code.google.com'
 
+    for img in img_urls:
+        file_name = os.path.basename(img)
+        file_path = dest_dir + '\\' + file_name
+        url = url_base + img
+        
+        print("Downloading image %s with url %s..." % (file_name, url), end=': ')
+        response = urllib.request.urlretrieve(url, file_path)
+
+        if response:
+            print('OK')
+        else:
+            print('Fail')
+
+    return
 
 def main():
     args = sys.argv[1:]
