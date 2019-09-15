@@ -6,8 +6,9 @@
 # Google's Python Class
 # http://code.google.com/edu/languages/google-python-class/
 
-import sys
+import fileinput
 import re
+import sys
 
 """Baby Names exercise
 
@@ -41,8 +42,27 @@ def extract_names(filename):
     followed by the name-rank strings in alphabetical order.
     ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
     """
-    # +++your code here+++
-    return
+    rank = []
+    for line in fileinput.input(files=filename):
+        search = re.search(r'.*Popularity in (\d{4}).*', line)
+
+        if search:
+            year = search.group(1)
+            rank.append(year)
+
+        search = re.search(r'<tr align="right"><td>(.*?)</td><td>(.*?)</td><td>(.*?)</td>', line)
+
+        if search:
+            pos = search.group(1)
+            male = search.group(2)
+            female = search.group(3)
+
+            rank.append("%s %s" % (male, pos))
+            rank.append("%s %s" % (female, pos))        
+
+    rank.sort()
+
+    return rank
 
 
 def main():
@@ -61,9 +81,14 @@ def main():
         summary = True
         del args[0]
 
-        # +++your code here+++
         # For each filename, get the names, then either print the text output
         # or write it to a summary file
+    
+    rank = []
+    for file in args:
+        rank.append(extract_names(file))
+    
+    print(rank)
 
 
 if __name__ == '__main__':
